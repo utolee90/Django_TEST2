@@ -14,6 +14,11 @@
             {{ student.name }}
             {{ student.address }}
             {{ student.email }}
+            <form action="{% url 'first:students_del' %}" method="POST">
+                {%csrf_token%}
+                <input type='hidden' name="del"
+                  value={{student.name}} />
+                <input type="submit" value="삭제"/></form>
         </div>
         {% endfor %}
 <script>

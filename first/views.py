@@ -40,6 +40,18 @@ def students_add(request):
             email=request.POST['email'])
         return redirect('first:students')
 
+def students_del(request):
+    if request.method == 'GET':
+        return redirect('first:students')
+    
+    elif request.method == 'POST':
+        delname = request.POST['del']
+        item = Students.objects.get(name=delname)
+        item.delete()
+        return render(request, 'first/students_del.html', {
+            'name':delname
+        } )
+
 def scores(request):
     if request.method == 'GET':
         scores = Scores.objects.all()

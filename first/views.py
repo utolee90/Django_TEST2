@@ -39,13 +39,11 @@ def students_add(request):
             Students.objects.create(name=request.POST['name'],
             address=request.POST['address'],
             email=request.POST['email'])
-        data = Students.objects.all()
-        return redirect("first:students")
+        return redirect('first:students')
 
 def scores(request):
     if request.method == 'GET':
         scores = Scores.objects.all()
-    
         return render(request, 'first/scores.html', {
             'scores' : scores
         })
@@ -65,12 +63,12 @@ def scores(request):
     
 def scores_del(request):
     if request.method == 'GET':
-        return redirect('first:students')
+        return redirect('first:scores')
     
-    elif request.method == 'POSt'
+    elif request.method == 'POST':
         delname = request.POST['del']
         item = Scores.objects.get(name=delname)
         item.delete()
-        return render(request, 'first:scores_del', {
+        return render(request, 'first/scores_del.html', {
             'name':delname
         } )

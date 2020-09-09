@@ -5,13 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="/first/students" method="post">
-{%csrf_token%}
-<label for="name">이름</label> <input name="name" type="text"/> <br/>
-<label for="address">주소(도/광역시 시/군/구)</label> <input name="address" type="text"/> <br/>
-<label for="address">E-mail</label> <input name="email" type="text"/><br/>
-<input type="submit" value="등록"/>
-</form>
+<button id="student_add">추가</button>
         <h2>{{ text }}</h2>
 
         {% for student in students %}
@@ -22,5 +16,9 @@
             {{ student.email }}
         </div>
         {% endfor %}
-
+<script>
+    document.querySelector('#student_add').onclick = function(){
+        location.href="{% url 'first:students_add' %}";
+    };
+</script>
 {% endblock %}

@@ -1,0 +1,7 @@
+<form action="{% url 'first:students_add' %}" method="post">
+    {% csrf_token %}
+    이름 : <input name="name" type="text"/><br/>
+    주소 : <input name="address" type="text"/><br/>
+    이메일 : <input name="email" type="text"/><br/>
+    <input type="submit" value="등록"/>
+</form>

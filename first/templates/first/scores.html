@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="/first/scores" method="post">
+<form action="{% url 'first:students' %}" method="post">
     {%csrf_token%}
     <label for="name">이름</label> <input name="name" type="text"/> <br/>
     <label for="math">수학</label> <input name="math" type="text"/> <br/>
@@ -28,13 +28,12 @@
         <td>{{ score.math }}</td>
         <td>{{ score.science }}</td>
         <td>{{ score.english }}</td>
-        <td> {% with score.name|add:'-del' as temper %}
-            <form action="/first/scores/del" method="get">
+        <td> 
+            <form action="{% url 'first:scores_del' %}" method="POST">
                 {%csrf_token%}
-                <input type='hidden' name={{temper}} 
-                  value="del"/>
+                <input type='hidden' name="del"
+                  value={{score.name}} />
                 <input type="submit" value="삭제"/></form> </td>
-            {% endwith %}
     </tr>
         {% endfor %}
     </table>

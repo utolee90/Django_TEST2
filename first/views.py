@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from .models import Students, Scores
 
@@ -16,15 +16,6 @@ def students(request):
             'students': students
         })
 
-    elif request.method == 'POST':
-        if request.POST['name'] != '':
-            Students.objects.create(name=request.POST['name'],
-            address=request.POST['address'],
-            email=request.POST['email'])
-        data = Students.objects.all()
-        return render(request, 'first/students.html', {
-            'students':data
-        })
 
 def students_detail(request, id):
     print('id:', id)
@@ -37,6 +28,19 @@ def students_detail(request, id):
         'text':'안녕하세요',
         'students': students
     })
+
+def students_add(request):
+    if request.method == 'GET':
+        return render(request, 'first/students_add.html', {
+        })
+
+    elif request.method == 'POST':
+        if request.POST['name'] != '':
+            Students.objects.create(name=request.POST['name'],
+            address=request.POST['address'],
+            email=request.POST['email'])
+        data = Students.objects.all()
+        return redirect("first:students")
 
 def scores(request):
     if request.method == 'GET':
@@ -55,11 +59,18 @@ def scores(request):
         else:
             pass
         
-        
-        
         return render(request, 'first/scores.html', {
             'scores' : data
         })
     
-def scores_del(request, name):
-    pass
+def scores_del(request):
+    if request.method == 'GET':
+        return redirect('first:students')
+    
+    elif request.method == 'POSt'
+        delname = request.POST['del']
+        item = Scores.objects.get(name=delname)
+        item.delete()
+        return render(request, 'first:scores_del', {
+            'name':delname
+        } )

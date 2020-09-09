@@ -1,0 +1,77 @@
+{% extends 'second/layout.html' %}
+
+{% block title %}
+<title>Todos</title>
+<style>.item-box-image{
+    cursor:pointer;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div id="content-block">
+<h2>내가할일<span class='right-content'><img src="{% static 'second/icon_add.png' %}"/></span></h2>
+<hr>
+<div class='item-box-enclose-3'>
+    <h3 class='center'>대기중</h3>
+        {% for todo in todos_pending %}
+        <!-- 반복 -->
+        <div class='item-box' id='item-box-{{ todo.seq }}'>
+            <span class='headline-small'>{{ todo.name }}</span>
+            <span class='right-content'>
+            {{ todo.end_date|date:"Y-m-d" }} 
+            {{ todo.group }}
+            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id='item-box-{{todo.seq}}-image' style='height:1em;'/>
+            </span>
+        </div>
+        <script>
+            idn = document.querySelector('#item-box-{{todo.seq}}-image')
+            idn.onclick = function(){
+                location.href="/second/todo/{{todo.seq}}";
+            };
+        </script>
+        {% endfor %}
+</div>
+<div class='item-box-enclose-3'>
+    <h3 class='center'>진행중</h3>
+    {% for todo in todos_inprogress %}
+        <!-- 반복 -->
+        <div class='item-box' id='item-box-{{ todo.seq }}'>
+            <span class='headline-small'>{{ todo.name }}</span>
+            <span class='right-content'>
+            {{ todo.end_date|date:"Y-m-d" }} 
+            {{ todo.group }}
+            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id='item-box-{{todo.seq}}-image' style='height:1em;'/>
+            </span>
+        </div>
+        <script>
+            idn = document.querySelector('#item-box-{{todo.seq}}-image')
+            idn.onclick = function(){
+                location.href="/second/todo/{{todo.seq}}";
+            };
+        </script>
+    {% endfor %}
+</div>
+<div class='item-box-enclose-3'>
+    <h3 class='center'>완료</h3>
+    {% for todo in todos_end %}
+        <!-- 반복 -->
+        <div class='item-box' id='item-box-{{ todo.seq }}'>
+            <span class='headline-small'>{{ todo.name }}</span>
+            <span class='right-content'>
+            {{ todo.end_date|date:"Y-m-d" }} 
+            {{ todo.group }}
+            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id='item-box-{{todo.seq}}-image' style='height:1em;'/>
+            </span>
+        </div>
+        <script>
+            idn = document.querySelector('#item-box-{{todo.seq}}-image')
+            idn.onclick = function(){
+                location.href="/second/todo/{{todo.seq}}";
+            };
+        </script>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}

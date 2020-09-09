@@ -1,0 +1,37 @@
+{% extends 'second/layout.html' %}
+
+{% block title %}
+<title>Favourites</title>
+<style>.item-box-image{
+    cursor:pointer;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div id="content-block">
+<h2>즐겨찾기 <span class='right-content'><img src="{% static 'second/icon_add.png' %}"/></span></h2>
+<hr>
+<div class='item-box-enclose'>
+        {% for favourite in favourites %}
+        <!-- 반복 -->
+        <div class='item-box' id='item-box-{{ favourite.seq }}'>
+            <span class='headline-small'>{{ favourite.name }}</span>
+            <span class='right-content'>
+            {{ favourite.reg_date|date:"Y-m-d" }} &nbsp;&nbsp;
+            {{ favourite.group }}
+            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id= 'item-box-{{favourite.seq}}-image' style='height:1em;'/>
+            </span>
+        </div>
+        <script>
+            idn = document.querySelector('#item-box-{{favourite.seq}}-image')
+            idn.onclick = function(){
+                location.href="/second/favourite/{{favourite.seq}}";
+            };
+        </script>
+        {% endfor %}
+</div>
+</div>
+
+{% endblock %}

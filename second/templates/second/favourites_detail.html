@@ -1,0 +1,46 @@
+{% extends 'second/layout.html' %}
+
+{% block title %}
+<title>Favourites {{ favourite.name }}</title>
+
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div id="content-block">
+    <h2>{{ favourite.name }}<span class='right-content'>
+        <img src="{% static 'second/icon_modify.png' %}"/><img src="{% static 'second/icon_delete.png' %}"/></span></h2>
+    <hr>
+    <div class='item-box-enclose'>
+            <div class='item-box'>
+                <table class='item-box-table'>
+                    <tr>
+                        <td>순번</td>
+                        <td> {{ favourite.seq }}</td>
+                    </tr>
+                    <tr>
+                        <td>명칭</td>
+                        <td>{{ favourite.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>URL</td>
+                        <td>{{ favourite.url }}</td>
+                    </tr>
+                    <tr>
+                        <td>메모</td>
+                        <td>{{ favourite.memo }}</td>
+                    </tr>
+                    <tr>
+                        <td>등록일</td>
+                        <td>{{ favourite.reg_date }}</td>
+                    </tr>
+                    <tr>
+                        <td>그룹</td>
+                        <td>{{ favourite.group }}</td>
+                    </tr>
+                </table>
+            </div>
+    </div>
+    </div>
+
+{% endblock %}

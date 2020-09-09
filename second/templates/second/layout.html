@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block title %}
+        {% endblock %}
+        {% load static %}
+    
+    <style>
+    @import url("{% static 'second/style.css' %}");
+    </style>
+    </head>
+
+    <body>
+        <div id="list">
+        <div class="headline">Dogo&amp;Favorite</div>
+        <ul>
+        <li><img src="{% static 'second/icon_home.png' %}"/> <a href="{% url 'second:index' %}">Home</a> </li>
+        <li><img src="{% static 'second/icon_favorite.png' %}"/> <a href="{% url 'second:favourites' %}">Favourite</a> </li>
+        <li><img src="{% static 'second/icon_todo.png' %}"/> <a href="{% url 'second:todos' %}">Todo</a></li>
+    </ul>
+    </div>
+    <div id="contents">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    </body>
+</html>

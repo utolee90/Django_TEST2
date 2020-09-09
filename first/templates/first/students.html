@@ -1,0 +1,26 @@
+{% extends 'first/layout.html' %}
+
+{% block title %}
+<title>학생 정보</title>
+{% endblock %}
+
+{% block content %}
+<form action="/first/students" method="post">
+{%csrf_token%}
+<label for="name">이름</label> <input name="name" type="text"/> <br/>
+<label for="address">주소(도/광역시 시/군/구)</label> <input name="address" type="text"/> <br/>
+<label for="address">E-mail</label> <input name="email" type="text"/><br/>
+<input type="submit" value="등록"/>
+</form>
+        <h2>{{ text }}</h2>
+
+        {% for student in students %}
+        <!-- 반복 -->
+        <div>
+            {{ student.name }}
+            {{ student.address }}
+            {{ student.email }}
+        </div>
+        {% endfor %}
+
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from .models import Students, Scores
+from .forms import StudentForms # import 하기
 
 # Create your views here.
 def index(request):
@@ -31,7 +32,10 @@ def students_detail(request, id):
 
 def students_add(request):
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
-        return render(request, 'first/students_add.html')
+        form = StudentForms() #폼 객체 생성
+        return render(request, 'first/students_add.html', {
+            'form':form
+        })
 
     elif request.method == 'POST':
         if request.POST['name'] != '':

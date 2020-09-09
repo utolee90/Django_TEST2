@@ -72,9 +72,7 @@ def scores_add(request):
         else:
             pass
         data = Scores.objects.all()
-        return render(request, 'first/scores.html', {
-            'scores' : data
-        })
+        return redirect('first:scores')
 
 
 def scores_del(request):

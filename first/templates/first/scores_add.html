@@ -1,4 +1,4 @@
-<form action="{% url 'first:scores' %}" method="post">
+<form action="{% url 'first:scores_add' %}" method="post">
     {%csrf_token%}
     <label for="name">이름</label> <input name="name" type="text"/> <br/>
     <label for="math">수학</label> <input name="math" type="text"/> <br/>

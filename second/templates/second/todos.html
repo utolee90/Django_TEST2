@@ -2,23 +2,19 @@
 
 {% block title %}
 <title>Todos</title>
-<style>.item-box-image{
-    cursor:pointer;
-}
-</style>
 {% endblock %}
 
 {% block content %}
 {% load static %}
 <div id="content-block">
-<h2>내가할일<span class='right-content'><img src="{% static 'second/icon_add.png' %}"/></span></h2>
+<h2>내가할일<span class='right-content'><a href="{% url 'second:todo_add' %}"><img src="{% static 'second/icon_add.png' %}"/></a></span></h2>
 <hr>
 <div class='item-box-enclose-3'>
     <h3 class='center'>대기중</h3>
         {% for todo in todos_pending %}
         <!-- 반복 -->
         <div class='item-box' id='item-box-{{ todo.seq }}'>
-            <span class='headline-small'>{{ todo.name }}</span>
+            <span class='headline-small'><a href="{% url 'second:todo_detail' todo.seq %}">{{ todo.name }}</a></span>
             <span class='right-content'>
             {{ todo.end_date|date:"Y-m-d" }} 
             {{ todo.group }}
@@ -38,7 +34,7 @@
     {% for todo in todos_inprogress %}
         <!-- 반복 -->
         <div class='item-box' id='item-box-{{ todo.seq }}'>
-            <span class='headline-small'>{{ todo.name }}</span>
+            <span class='headline-small'><a href="{% url 'second:todo_detail' todo.seq %}">{{ todo.name }}</a></span>
             <span class='right-content'>
             {{ todo.end_date|date:"Y-m-d" }} 
             {{ todo.group }}
@@ -58,7 +54,7 @@
     {% for todo in todos_end %}
         <!-- 반복 -->
         <div class='item-box' id='item-box-{{ todo.seq }}'>
-            <span class='headline-small'>{{ todo.name }}</span>
+            <span class='headline-small'><a href="{% url 'second:todo_detail' todo.seq %}">{{ todo.name }}</a></span>
             <span class='right-content'>
             {{ todo.end_date|date:"Y-m-d" }} 
             {{ todo.group }}

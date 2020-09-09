@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Favourite, FavouriteGroup, Todo, TodoGroup
+from .forms import FavouriteModelForms, TodoModelForms
 
 
 # Create your views here.
@@ -23,6 +24,23 @@ def favourites_detail(request, idn):
     return render(request, 'second/favourites_detail.html', {
         'favourite': favourite[0]
     })
+
+def favourites_add(request):
+    form = FavouriteModelForms()
+    if request.method == 'GET': #get 메소드로 얻을 때는 강제
+        return render(request, 'second/favourites_add.html', {
+            'form':form
+        })
+
+    elif request.method == 'POST':
+        form = FavouriteModelForms(request.POST)
+        if form.is_valid():
+            post = form.save()
+            return redirect('second:favourites')
+        else:
+            return render(request, 'second/favourites_add.html', {
+                'form':form
+            })
 
 def todo(request):
     # group1= request.GET.get('group') #숫자 얻기
@@ -49,7 +67,6 @@ def todo(request):
     todos_end = Todo.objects.filter(status='End')
 
     return render(request, 'second/todos.html', {
-        #'todos': todos
         'todos_pending' : todos_pending,
         'todos_inprogress' : todos_inprogress,
         'todos_end' : todos_end
@@ -61,4 +78,20 @@ def todo_detail(request, idn):
         'todo': todo[0]
     })
 
+def todo_add(request):
+    form = TodoModelForms()
+    if request.method == 'GET': #get 메소드로 얻을 때는 강제
+        return render(request, 'second/todo_add.html', {
+            'form':form
+        })
+
+    elif request.method == 'POST':
+        form = TodoModelForms(request.POST)
+        if form.is_valid():
+            post = form.save()
+            return redirect('second:todos')
+        else:
+            return render(request, 'second/todo_add.html', {
+                'form':form
+            })
 

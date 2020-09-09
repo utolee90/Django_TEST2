@@ -47,9 +47,9 @@ class TodoGroup(models.Model):
 
 class Todo(models.Model):
     STATUS_LIST=[
-        ('Pending', 'Pending'),
-        ('Inprogress', 'Inprogress'),
-        ('End', 'End'), 
+        ('Pending', '할일'),
+        ('Inprogress', '진행중'),
+        ('End', '완료'), 
     ]
     seq = models.AutoField(primary_key = True)
     name = models.CharField(max_length=50)

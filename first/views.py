@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
 from .models import Students, Scores
-from .forms import StudentForms # import 하기
+from .forms import StudentForms, StudentModelForms # import 하기
 
 # Create your views here.
 def index(request):
@@ -31,18 +31,27 @@ def students_detail(request, id):
     })
 
 def students_add(request):
+    #form = StudentForms() #폼 객체 생성
+    form = StudentModelForms()
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
-        form = StudentForms() #폼 객체 생성
+        
         return render(request, 'first/students_add.html', {
             'form':form
         })
 
     elif request.method == 'POST':
-        if request.POST['name'] != '':
-            Students.objects.create(name=request.POST['name'],
-            address=request.POST['address'],
-            email=request.POST['email'])
-        return redirect('first:students')
+        #form = StudentForms(request.POST) #폼 객체 생성
+        form = StudentModelForms(request.POST)
+        if form.is_valid():
+            post = form.save()
+            # Students.objects.create(name=request.POST['name'],
+            # address=request.POST['address'],
+            # email=request.POST['email'])
+            return redirect('first:students')
+        else:
+            return render(request, 'first/students_add.html', {
+                'form':form
+            })
 
 def students_del(request):
     if request.method == 'GET':
@@ -75,7 +84,7 @@ def scores_add(request):
             science=request.POST['science'])
         else:
             pass
-        data = Scores.objects.all()
+        
         return redirect('first:scores')
 
 

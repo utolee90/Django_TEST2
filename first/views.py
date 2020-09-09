@@ -30,9 +30,8 @@ def students_detail(request, id):
     })
 
 def students_add(request):
-    if request.method == 'GET':
-        return render(request, 'first/students_add.html', {
-        })
+    if request.method == 'GET': #get 메소드로 얻을 때는 강제
+        return render(request, 'first/students_add.html')
 
     elif request.method == 'POST':
         if request.POST['name'] != '':
@@ -47,8 +46,12 @@ def scores(request):
         return render(request, 'first/scores.html', {
             'scores' : scores
         })
+
+def scores_add(request):
+    if request.method == 'GET':
+        return render(request, 'first/scores_add.html')
+
     elif request.method == 'POST':
-        data = Scores.objects.all()
         if request.POST['name'] != '':
             Scores.objects.create(name=request.POST['name'],
             math=request.POST['math'],
@@ -56,11 +59,12 @@ def scores(request):
             science=request.POST['science'])
         else:
             pass
-        
+        data = Scores.objects.all()
         return render(request, 'first/scores.html', {
             'scores' : data
         })
-    
+
+
 def scores_del(request):
     if request.method == 'GET':
         return redirect('first:scores')

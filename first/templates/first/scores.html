@@ -5,14 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'first:scores' %}" method="post">
-    {%csrf_token%}
-    <label for="name">이름</label> <input name="name" type="text"/> <br/>
-    <label for="math">수학</label> <input name="math" type="text"/> <br/>
-    <label for="english">영어</label> <input name="english" type="text"/><br/>
-    <label for="science">과학</label> <input name="science" type="text"/><br/>
-    <input type="submit" value="등록"/>
-</form>
+<br/>
+<button id="score_add">추가</button>
         <table>
         <tr>
             <th>이름</th>
@@ -37,4 +31,9 @@
     </tr>
         {% endfor %}
     </table>
+    <script>
+        document.querySelector('#score_add').onclick = function(){
+            location.href="{% url 'first:scores_add' %}";
+        };
+    </script>
 {% endblock %}

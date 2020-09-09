@@ -2,6 +2,11 @@
 
 {% block title %}
 <title>학생 정보</title>
+<style>
+    #form_del{
+        display:inline;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +19,7 @@
             {{ student.name }}
             {{ student.address }}
             {{ student.email }}
-            <form action="{% url 'first:students_del' %}" method="POST">
+            <form id="form_del" action="{% url 'first:students_del' %}" method="POST">
                 {%csrf_token%}
                 <input type='hidden' name="del"
                   value={{student.name}} />

@@ -1,7 +1,47 @@
 {% extends 'second/layout.html' %}
 
 {% block title %}
-<title>Todos</title>
+todos_end
+{% endblock %}
+{% block newcss %}
+<style>
+/* item-box related */
+.item-box-image{
+        float:right;
+    } 
+    .sublist{
+        display:none;
+    }
+    .sublist ul{
+        list-style-type:none;
+        padding:0;
+        margin:0;
+    }
+    .item-box-image:hover .sublist{
+        float:right;
+        display:block;
+    }
+    .item-box-image:hover .sublist li{
+        background-color:white;
+        width:5em;
+        right:0em;
+        border: 1px solid black;
+        z-index:1;
+        line-height:1.5em;
+    }
+    .item-box-image:hover .sublist li:first-child{
+        position:absolute;
+        bottom:-1em;
+    }
+    .item-box-image:hover .sublist li:nth-child(2){
+        position:absolute;
+        bottom:-2.5em;
+    }
+    .item-box-image:hover .sublist li:nth-child(3){
+        position:absolute;
+        bottom:-4em;
+    } 
+</style>
 {% endblock %}
 
 {% block content %}
@@ -12,19 +52,39 @@
 <div class='item-box-enclose-3'>
     <h3 class='center'>대기중</h3>
         {% for todo in todos_pending %}
-        <!-- 반복 -->
+        <!-- todo pending -->
         <div class='item-box' id='item-box-{{ todo.seq }}'>
             <span class='headline-small'><a href="{% url 'second:todo_detail' todo.seq %}">{{ todo.name }}</a></span>
-            <span class='right-content'>
+            <div class='right-content'>
             {{ todo.end_date|date:"Y-m-d" }} 
             {{ todo.group }}
-            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id='item-box-{{todo.seq}}-image' style='height:1em;'/>
-            </span>
+                <div class='item-box-image'> 
+                    <img src="{% static 'second/icon_more.png' %}"  id= 'item-box-{{todo.seq}}-image' style='height:1em;'/>
+                    <div id ="item-list-{{todo.seq}}" class="sublist">
+                        <ul>
+                            <li id="del-{{todo.seq}}-from-list">삭제</li>
+                            <li id="shift-{{todo.seq}}-to-inprogress">진행중</li>
+                            <li id="shift-{{todo.seq}}-to-end">완료</li>
+                        </ul>
+                    </div>
+                </div> 
+           </div>
         </div>
         <script>
-            idn = document.querySelector('#item-box-{{todo.seq}}-image')
-            idn.onclick = function(){
-                location.href="/second/todo/{{todo.seq}}";
+            idx = document.getElementById('del-{{todo.seq}}-from-list');
+            idx.onclick = () =>{ 
+                fetch("{% url 'second:todo_quick'  %}"+'?'+ new URLSearchParams({'del':'{{todo.seq}}'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
+            };
+            idi = document.getElementById('shift-{{todo.seq}}-to-inprogress');
+            idi.onclick = () =>{ 
+                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Inprogress'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
+            };
+            ide = document.getElementById('shift-{{todo.seq}}-to-end');
+            ide.onclick = () =>{ 
+                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'End'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
             };
         </script>
         {% endfor %}
@@ -32,19 +92,39 @@
 <div class='item-box-enclose-3'>
     <h3 class='center'>진행중</h3>
     {% for todo in todos_inprogress %}
-        <!-- 반복 -->
+        <!-- todo_inprogress -->
         <div class='item-box' id='item-box-{{ todo.seq }}'>
             <span class='headline-small'><a href="{% url 'second:todo_detail' todo.seq %}">{{ todo.name }}</a></span>
-            <span class='right-content'>
+            <div class='right-content'>
             {{ todo.end_date|date:"Y-m-d" }} 
             {{ todo.group }}
-            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id='item-box-{{todo.seq}}-image' style='height:1em;'/>
-            </span>
-        </div>
+                <div class='item-box-image'>
+                    <img src="{% static 'second/icon_more.png' %}"  id= 'item-box-{{todo.seq}}-image' style='height:1em;'/>
+                    <div id ="item-list-{{todo.seq}}" class="sublist">
+                        <ul>
+                            <li id="del-{{todo.seq}}-from-list">삭제</li>
+                            <li id="shift-{{todo.seq}}-to-pending">대기중</li>
+                            <li id="shift-{{todo.seq}}-to-end">완료</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </div>
         <script>
-            idn = document.querySelector('#item-box-{{todo.seq}}-image')
-            idn.onclick = function(){
-                location.href="/second/todo/{{todo.seq}}";
+            idx = document.getElementById('del-{{todo.seq}}-from-list');
+            idx.onclick = () =>{ 
+                fetch("{% url 'second:todo_quick'  %}"+'?'+ new URLSearchParams({'del':'{{todo.seq}}'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
+            };
+            idp = document.getElementById('shift-{{todo.seq}}-to-pending');
+            idp.onclick = () =>{ 
+                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Pending'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
+            };
+            ide = document.getElementById('shift-{{todo.seq}}-to-end');
+            ide.onclick = () =>{ 
+                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'End'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
             };
         </script>
     {% endfor %}
@@ -52,19 +132,39 @@
 <div class='item-box-enclose-3'>
     <h3 class='center'>완료</h3>
     {% for todo in todos_end %}
-        <!-- 반복 -->
+        <!--todo_end -->
         <div class='item-box' id='item-box-{{ todo.seq }}'>
             <span class='headline-small'><a href="{% url 'second:todo_detail' todo.seq %}">{{ todo.name }}</a></span>
-            <span class='right-content'>
+            <div class='right-content'>
             {{ todo.end_date|date:"Y-m-d" }} 
             {{ todo.group }}
-            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id='item-box-{{todo.seq}}-image' style='height:1em;'/>
-            </span>
+                <div class='item-box-image'>
+                    <img src="{% static 'second/icon_more.png' %}"  id= 'item-box-{{todo.seq}}-image' style='height:1em;'/>
+                    <div id ="item-list-{{todo.seq}}" class="sublist">
+                        <ul>
+                            <li id="del-{{todo.seq}}-from-list">삭제</li>
+                            <li id="shift-{{todo.seq}}-to-pending">대기중</li>
+                            <li id="shift-{{todo.seq}}-to-inprogress">진행중</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <script>
-            idn = document.querySelector('#item-box-{{todo.seq}}-image')
-            idn.onclick = function(){
-                location.href="/second/todo/{{todo.seq}}";
+            idx = document.getElementById('del-{{todo.seq}}-from-list');
+            idx.onclick = () =>{ 
+                fetch("{% url 'second:todo_quick'  %}"+'?'+ new URLSearchParams({'del':'{{todo.seq}}'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
+            };
+            idp = document.getElementById('shift-{{todo.seq}}-to-pending');
+            idp.onclick = () =>{ 
+                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Pending'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
+            };
+            idi = document.getElementById('shift-{{todo.seq}}-to-inprogress');
+            idi.onclick = () =>{ 
+                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Inprogress'})).then(
+                    function(){location.href="{% url 'second:todos' %}";});
             };
         </script>
     {% endfor %}

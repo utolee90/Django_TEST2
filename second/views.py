@@ -9,20 +9,18 @@ def index(request):
 
 def favourites(request):
     favourites = Favourite.objects.all()
-    """
-        SELECT * 
-            FROM favourite
-    """
 
     return render(request, 'second/favourites.html', {
         'favourites': favourites
     })
 
 def favourites_detail(request, idn):
-    favourite = Favourite.objects.filter(pk=idn)
-    
+    favourite = Favourite.objects.get(pk=idn)
+    delid = f'del-favourite-{favourite.seq}'
     return render(request, 'second/favourites_detail.html', {
-        'favourite': favourite[0]
+        'favourite': favourite,
+        'delid': delid,
+        'idn' : idn
     })
 
 def favourites_add(request):
@@ -71,25 +69,14 @@ def favourites_delete(request):
         item.delete()
         return redirect('second:favourites')
 
-def todo(request):
-    # group1= request.GET.get('group') #숫자 얻기
-    # end_date1 = request.GET.get('end_date')
-    # if group1 !=None:
-    #     group_item = TodoGroup.objects.get(name=group1)
-    #     groupnum = group_item.seq #숫자를 얻는다.
-    # else:
-    #     groupnum = None
+def favourites_quick(request):
+    if request.method == 'GET' and request.GET.get('del'):
+        delpk = request.GET['del']
+        item = Favourite.objects.get(pk=delpk)
+        item.delete()
+        
 
-    # if groupnum !=None:
-    #     if end_date1 !=None:
-    #         todos = Todo.objects.filter(group=groupnum, end_date__gte=end_date1)
-    #     else:
-    #         todos = Todo.objects.filter(group=groupnum)
-    # else:
-    #     if end_date1 !=None:
-    #         todos = Todo.objects.filter(end_date__gte=end_date1)
-    #     else:
-    #         todos = Todo.objects.all()
+def todo(request):
 
     todos_pending = Todo.objects.filter(status='Pending')
     todos_inprogress = Todo.objects.filter(status='Inprogress')
@@ -103,8 +90,11 @@ def todo(request):
 
 def todo_detail(request, ids):
     todo = Todo.objects.get(pk=ids)
+    delid = f'del-todo-{todo.seq}'
     return render(request, 'second/todo_detail.html', {
          'todo': todo,
+         'delid': delid,
+         'idn': ids
     })
     
 
@@ -153,3 +143,17 @@ def todo_delete(request):
         item = Todo.objects.get(pk=delpk)
         item.delete()
         return redirect('second:todos')
+
+def todo_quick(request):
+    if request.method == 'GET' and request.GET.get('del'):
+        delpk = request.GET['del']
+        item = Todo.objects.get(pk=delpk)
+        item.delete()
+
+def todo_shift(request):
+    if request.method == 'GET' and request.GET.get('status') and request.GET.get('seq'):
+        seq = request.GET['seq']
+        status = request.GET['status']
+        item = Todo.objects.get(pk=seq)
+        item.status = status
+        item.save()

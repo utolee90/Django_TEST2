@@ -112,3 +112,39 @@ html, body{height:100%;
     .item-box-image{
         cursor:pointer;
     }
+
+    .item-box-image{
+        float:right;
+    } 
+    .sublist{
+        display:none;
+    }
+    .sublist ul{
+        list-style-type:none;
+        padding:0;
+        margin:0;
+    }
+    .item-box-image:hover .sublist{
+        float:right;
+        display:block;
+    }
+    .item-box-image:hover .sublist li{
+        background-color:white;
+        width:5em;
+        right:0em;
+        border: 1px solid black;
+        z-index:1;
+        line-height:1.5em;
+    }
+    .item-box-image:hover .sublist li:first-child{
+        position:absolute;
+        bottom:-1em;
+    }
+    .item-box-image:hover .sublist li:nth-child(2){
+        position:absolute;
+        bottom:-2.5em;
+    }
+    .item-box-image:hover .sublist li:nth-child(3){
+        position:absolute;
+        bottom:-4em;
+    } 

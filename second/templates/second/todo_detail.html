@@ -1,6 +1,6 @@
 {% extends 'second/detail_pages.html' %}
 
-{% block titlename %}
+{% block title %}
 Todo {{ todo.name }}
 {% endblock %}
 
@@ -12,12 +12,8 @@ Todo {{ todo.name }}
 {% url 'second:todo_modify' todo.seq %}
 {% endblock %}
 
-
-{% block content_del_form %}
-        <form class="del-form" id="del-todo-{{todo.seq}}" method="post" action="{% url 'second:todo_delete' %}">
-            {% csrf_token %}
-            <input type="hidden" name="del" value="{{todo.seq}}"/>
-        </form> <!--숨은 폼 작성 -->
+{% block content_delete_url %}
+{% url 'second:todo_delete' %}
 {% endblock %}
 
 
@@ -49,15 +45,3 @@ Todo {{ todo.name }}
     </div>
 {% endblock %}
 
-{% block content_script %}
-    <script>
-        let form = document.getElementById('del-todo-{{todo.seq}}');
-        alert_msg = () => {
-            let form = document.getElementById('del-todo-{{todo.seq}}');
-            let msg = confirm('삭제하시겠습니까?');
-            if (msg){ // 강제로 히든 폼 형식을 만든다.
-                form.submit();
-            }
-        };
-    </script>
-{% endblock %}

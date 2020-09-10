@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {% block title %}
-        {% endblock %}
-        {% load static %}
+        <title>{% block title %}
+        {% endblock %}</title>
+{% block newcss %}
+{% endblock %}
+{% load static %}
     
     <style>
     @import url("{% static 'second/style.css' %}");

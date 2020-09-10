@@ -1,6 +1,6 @@
 {% extends 'second/detail_pages.html' %}
 
-{% block titlename %}
+{% block title %}
 Favourites {{ favourite.name }}
 {% endblock %}
 
@@ -12,11 +12,8 @@ Favourites {{ favourite.name }}
 {% url 'second:favourites_modify' favourite.seq %}
 {% endblock %}
 
-{% block content_del_form %}
-        <form class="del-form" id="del-favourite-{{favourite.seq}}" method="post" action="{% url 'second:favourites_delete' %}">
-            {% csrf_token %}
-            <input type="hidden" name="del" value="{{favourite.seq}}"/>
-        </form> <!--숨은 폼 작성 -->
+{% block content_delete_url %}
+{% url 'second:favourites_delete' %}
 {% endblock %}
 
 {% block content_detail %}
@@ -49,17 +46,4 @@ Favourites {{ favourite.name }}
                 </table>
             </div>
     </div>
-{% endblock %}
-
-{% block content_script %}
-    <script>
-        let form = document.getElementById('del-favourite-{{favourite.seq}}');
-        alert_msg = () => {
-            let form = document.getElementById('del-favourite-{{favourite.seq}}');
-            let msg = confirm('삭제하시겠습니까?');
-            if (msg){ // 강제로 히든 폼 형식을 만든다.
-                form.submit();
-            }
-        };
-    </script>
 {% endblock %}

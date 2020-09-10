@@ -1,20 +1,32 @@
 {% extends 'second/layout.html' %}
 
 {% block title %}
-<title>Favourites</title>
+Favourites
+{% endblock %}
+{%block newcss %}
 <style>
+    /* item-box related */
+    .item-box-image{
+        float:right;
+    }
     .sublist{
         display:none;
-        background-color:white;
-        width:5em;
     }
     .sublist ul{
         list-style-type:none;
         padding:0;
         margin:0;
     }
-    .sublist:hover{
+    .item-box-image:hover .sublist{
         display:block;
+    }
+    .item-box-image:hover .sublist li{
+        background-color:white;
+        width:5em;
+        position:absolute;
+        right:0em;
+        border: 1px solid black;
+        z-index:1;
     }
 </style>
 {% endblock %}
@@ -32,15 +44,20 @@
             <div class='right-content'>
             {{ favourite.reg_date|date:"Y-m-d" }} &nbsp;&nbsp;
             {{ favourite.group }}
-            <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id= 'item-box-{{favourite.seq}}-image' style='height:1em;'/>
-            <div id ="item-list-{{favourite.seq}}" class="sublist"><ul><li>삭제</li></ul></div>
-            </div>
+            <div class='item-box-image'>
+            <img src="{% static 'second/icon_more.png' %}"  id= 'item-box-{{favourite.seq}}-image' style='height:1em;'/>
+            <div id ="item-list-{{favourite.seq}}" class="sublist"><ul><li id="del-{{favourite.seq}}-from-list">삭제</li></ul></div>
+            </div></div>
         </div>
-        
+        <script>
+            idx = document.getElementById('del-{{favourite.seq}}-from-list');
+            idx.onclick = () =>{ 
+                fetch("{% url 'second:favourites_quick'  %}"+'?'+ new URLSearchParams({'del':'{{favourite.seq}}'})).then(
+                    function(){location.href="{% url 'second:favourites' %}";});
+            }
+        </script>
         {% endfor %}
 </div>
 </div>
-<script>
-    idn = document.querySelectorAll('.item-box-image');
-</script>
+
 {% endblock %}

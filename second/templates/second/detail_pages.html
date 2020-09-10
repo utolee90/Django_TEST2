@@ -1,0 +1,31 @@
+{% extends 'second/layout.html' %}
+
+{% block title %}
+
+<title>{% block titlename %}
+    {% endblock %}</title>
+<style>.del-form{
+    display:inline;}
+</style>
+
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div id="content-block">
+    <h2>{% block content_title %}
+        {% endblock %}<span class='right-content'>
+        <a href="{% block content_modify_url %}{% endblock %}"><img src="{% static 'second/icon_modify.png' %}"/></a>
+        {% block content_del_form %}
+        {% endblock %}
+        <a href="" onclick="alert_msg();"><img src="{% static 'second/icon_delete.png' %}"/></a></span></h2>
+    <hr>
+    <div class='item-box-enclose'>
+        {% block content_detail %}
+        {% endblock %}
+    </div>
+    {% block content_script %}
+    {% endblock %}
+
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, Http404
 from .models import Students, Scores
 from .forms import StudentForms, StudentModelForms # import 하기
 
@@ -10,7 +10,13 @@ def index(request):
 
 def students(request):
     if request.method == 'GET':
-        students = Students.objects.all()
+        if request.GET.get('start') and request.GET.get('end'):
+            start = int(request.GET['start'])
+            end = int(request.GET['end'])
+            students = Students.objects.filter(pk__range=(start, end))
+
+        else:
+            students = Students.objects.all()
         
         return render(request, 'first/students.html', {
             'text':'안녕하세요',
@@ -53,13 +59,32 @@ def students_add(request):
                 'form':form
             })
 
+def students_modify(request,id):
+    try:
+        student = Students.objects.get(pk=id)
+    except:
+        raise Http404("404")
+
+    if request.method=='GET':
+        form = StudentModelForms(instance=student) #instance값이 나옴.
+        return render(request,'first/students_add.html',{
+            'form':form})
+
+    elif request.method=='POST':
+        form = StudentModelForms(request.POST,instance=student)
+        if form.is_valid():
+            student=form.save()
+            return render(request,'first/students_add.html',{
+                'form':form})
+
 def students_del(request):
     if request.method == 'GET':
         return redirect('first:students')
     
     elif request.method == 'POST':
-        delname = request.POST['del']
-        item = Students.objects.get(name=delname)
+        delpk = request.POST['del']
+        item = Students.objects.get(pk=delpk)
+        delname = item.name
         item.delete()
         return render(request, 'first/students_del.html', {
             'name':delname
@@ -93,8 +118,9 @@ def scores_del(request):
         return redirect('first:scores')
     
     elif request.method == 'POST':
-        delname = request.POST['del']
-        item = Scores.objects.get(name=delname)
+        delpk = request.POST['del']
+        item = Scores.objects.get(pk=delpk)
+        delname = item.name
         item.delete()
         return render(request, 'first/scores_del.html', {
             'name':delname

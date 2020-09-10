@@ -26,7 +26,7 @@
             <form action="{% url 'first:scores_del' %}" method="POST">
                 {%csrf_token%}
                 <input type='hidden' name="del"
-                  value={{score.name}} />
+                  value={{score.pk}} />
                 <input type="submit" value="삭제"/></form> </td>
     </tr>
         {% endfor %}

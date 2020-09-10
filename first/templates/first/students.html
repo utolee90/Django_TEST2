@@ -3,7 +3,7 @@
 {% block title %}
 <title>학생 정보</title>
 <style>
-    #form_del{
+    #form_del, #form_mod{
         display:inline;
     }
 </style>
@@ -19,10 +19,15 @@
             {{ student.name }}
             {{ student.address }}
             {{ student.email }}
+            <form id="form_mod" action="{% url 'first:students_modify' student.pk %}" method="POST">
+                {%csrf_token%}
+                <input type='hidden' name="name" value={{student.name}} />
+                <input type='hidden' name="address" value={{student.address}} />
+                <input type='hidden' name="email" value={{student.email}} />
+                <input type="submit" value="수정"/></form>
             <form id="form_del" action="{% url 'first:students_del' %}" method="POST">
                 {%csrf_token%}
-                <input type='hidden' name="del"
-                  value={{student.name}} />
+                <input type='hidden' name="del" value={{student.pk}} />
                 <input type="submit" value="삭제"/></form>
         </div>
         {% endfor %}

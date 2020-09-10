@@ -42,6 +42,35 @@ def favourites_add(request):
                 'form':form
             })
 
+def favourites_modify(request, idn):
+    favourite = Favourite.objects.get(seq=idn)
+    
+    if request.method == 'GET': #get 메소드로 얻을 때는 강제
+        form = FavouriteModelForms(instance=favourite)
+        return render(request, 'second/favourites_add.html', {
+            'form':form
+        })
+
+    elif request.method == 'POST':
+        form = FavouriteModelForms(request.POST, instance=favourite)
+        if form.is_valid():
+            post = form.save()
+            return redirect('second:favourites')
+        else:
+            return render(request, 'second/favourites_add.html', {
+                'form':form
+            })
+
+def favourites_delete(request):
+    if request.method == 'GET':
+        return redirect('second:favourites')
+    
+    elif request.method == 'POST':
+        delpk = request.POST['del']
+        item = Favourite.objects.get(pk=delpk)
+        item.delete()
+        return redirect('second:favourites')
+
 def todo(request):
     # group1= request.GET.get('group') #숫자 얻기
     # end_date1 = request.GET.get('end_date')
@@ -72,11 +101,12 @@ def todo(request):
         'todos_end' : todos_end
     })
 
-def todo_detail(request, idn):
-    todo = Todo.objects.filter(pk=idn)
+def todo_detail(request, ids):
+    todo = Todo.objects.get(pk=ids)
     return render(request, 'second/todo_detail.html', {
-        'todo': todo[0]
+         'todo': todo,
     })
+    
 
 def todo_add(request):
     form = TodoModelForms()
@@ -95,3 +125,31 @@ def todo_add(request):
                 'form':form
             })
 
+def todo_modify(request, ids):
+    todo = Todo.objects.get(seq=ids)
+    
+    if request.method == 'GET': #get 메소드로 얻을 때는 강제
+        form = TodoModelForms(instance=todo)
+        return render(request, 'second/todo_add.html', {
+            'form':form
+        })
+
+    elif request.method == 'POST':
+        form = TodoModelForms(request.POST, instance=todo)
+        if form.is_valid():
+            post = form.save()
+            return redirect('second:todos')
+        else:
+            return render(request, 'second/todo_add.html', {
+                'form':form
+            })
+
+def todo_delete(request):
+    if request.method == 'GET':
+        return redirect('second:todos')
+    
+    elif request.method == 'POST':
+        delpk = request.POST['del']
+        item = Todo.objects.get(pk=delpk)
+        item.delete()
+        return redirect('second:todos')

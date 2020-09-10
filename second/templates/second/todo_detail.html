@@ -1,17 +1,27 @@
-{% extends 'second/layout.html' %}
+{% extends 'second/detail_pages.html' %}
 
-{% block title %}
-<title>Todo {{ todo.name }}</title>
+{% block titlename %}
+Todo {{ todo.name }}
 {% endblock %}
 
-{% block content %}
-{% load static %}
-<div id="content-block">
-    <h2>{{ todo.name }}<span class='right-content'>
-        <img src="{% static 'second/icon_modify.png' %}"/><img src="{% static 'second/icon_delete.png' %}"/></span></h2>
-    <hr>
-    <div class='item-box-enclose'>
-            <!-- 반복 -->
+{% block content_title %}
+{{ todo.name }}
+{% endblock %}
+
+{% block content_modify_url %}
+{% url 'second:todo_modify' todo.seq %}
+{% endblock %}
+
+
+{% block content_del_form %}
+        <form class="del-form" id="del-todo-{{todo.seq}}" method="post" action="{% url 'second:todo_delete' %}">
+            {% csrf_token %}
+            <input type="hidden" name="del" value="{{todo.seq}}"/>
+        </form> <!--숨은 폼 작성 -->
+{% endblock %}
+
+
+{% block content_detail %}
             <div class='item-box'>
                 <table class='item-box-table'>
                     <tr>
@@ -27,16 +37,8 @@
                         <td>{{ todo.status }}</td>
                     </tr>
                     <tr>
-                        <td>등록일</td>
-                        <td>{{ todo.reg_date }}</td>
-                    </tr>
-                    <tr>
-                        <td>종료일</td>
+                        <td>수행일</td>
                         <td>{{ todo.end_date }}</td>
-                    </tr>
-                    <tr>
-                        <td>삭제여부</td>
-                        <td>{{ todo.del_yn }}</td>
                     </tr>
                     <tr>
                         <td>그룹</td>
@@ -45,5 +47,17 @@
                 </table>
             </div>
     </div>
-    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script>
+        let form = document.getElementById('del-todo-{{todo.seq}}');
+        alert_msg = () => {
+            let form = document.getElementById('del-todo-{{todo.seq}}');
+            let msg = confirm('삭제하시겠습니까?');
+            if (msg){ // 강제로 히든 폼 형식을 만든다.
+                form.submit();
+            }
+        };
+    </script>
 {% endblock %}

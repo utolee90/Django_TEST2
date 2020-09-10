@@ -2,6 +2,21 @@
 
 {% block title %}
 <title>Favourites</title>
+<style>
+    .sublist{
+        display:none;
+        background-color:white;
+        width:5em;
+    }
+    .sublist ul{
+        list-style-type:none;
+        padding:0;
+        margin:0;
+    }
+    .sublist:hover{
+        display:block;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,20 +29,18 @@
         <!-- 반복 -->
         <div class='item-box' id='item-box-{{ favourite.seq }}'>
             <span class='headline-small'><a href="{% url 'second:favourites_detail' favourite.seq %}">{{ favourite.name }}</a></span>
-            <span class='right-content'>
+            <div class='right-content'>
             {{ favourite.reg_date|date:"Y-m-d" }} &nbsp;&nbsp;
             {{ favourite.group }}
             <img src="{% static 'second/icon_more.png' %}" class='item-box-image' id= 'item-box-{{favourite.seq}}-image' style='height:1em;'/>
-            </span>
+            <div id ="item-list-{{favourite.seq}}" class="sublist"><ul><li>삭제</li></ul></div>
+            </div>
         </div>
-        <script>
-            idn = document.querySelector('#item-box-{{favourite.seq}}-image')
-            idn.onclick = function(){
-                location.href="/second/favourite/{{favourite.seq}}";
-            };
-        </script>
+        
         {% endfor %}
 </div>
 </div>
-
+<script>
+    idn = document.querySelectorAll('.item-box-image');
+</script>
 {% endblock %}

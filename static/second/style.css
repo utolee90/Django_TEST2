@@ -35,6 +35,11 @@ html, body{height:100%;
         color:#f4f4f4;
         text-decoration:none;
     }
+    .block-upper{
+        padding-top:20px;
+        padding-right:40px;
+        padding-bottom:15px;
+    }
 /* 내용 공통 */
 
     #content-block{
@@ -87,10 +92,10 @@ html, body{height:100%;
         position:relative;
         padding:2px;
     }
-    @media all (max-width:540px){
+    @media (max-width:540px) {
         #list{
             width:33.3%;
-        };
+        }
     }
     .center{
         text-align:center;

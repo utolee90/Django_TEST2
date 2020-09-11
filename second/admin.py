@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import FavouriteGroup, Favourite, newproj, newprojGroup, TodoGroup, Todo
+from .models import FavouriteGroup, Favourite, newproj, newprojGroup, TodoGroup, Todo, User
 
 # Register your models here.
 @admin.register(FavouriteGroup)
@@ -24,4 +24,8 @@ class TodoGroupAdmin(admin.ModelAdmin):
 
 @admin.register(Todo)
 class TodoAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
     pass

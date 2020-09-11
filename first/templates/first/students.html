@@ -19,6 +19,15 @@
             {{ student.name }}
             {{ student.address }}
             {{ student.email }}
+            {% if student.file1 %}
+            <div>{{ student.file1 }}{{ student.file1.url }}</div>
+            {% endif %}
+            {% if student.image1  %}
+            <div>{{ student.image1 }}{{ student.image1.url }}</div>
+            {% endif %}
+            {% if student.image2 %}
+            <div>{{ student.image2 }}{{ student.image2.url }}</div>
+            {% endif %}
             <form id="form_mod" action="{% url 'first:students_modify' student.pk %}" method="POST">
                 {%csrf_token%}
                 <input type='hidden' name="name" value={{student.name}} />

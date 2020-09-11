@@ -22,6 +22,13 @@
     </ul>
     </div>
     <div id="contents">
+        {% if request.user.is_authenticated == False %}
+        <div class='right-content block-upper'><a href="{% url 'second:login' %}">로그인</a> &nbsp;
+            <a href="{% url 'second:signup' %}">회원가입</a></div>
+        {% else %}
+        <div class='right-content block-upper'>{{request.user}} &nbsp; <a href="{% url 'second:logout' %}">로그아웃</a></div>
+        
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>

@@ -49,13 +49,9 @@ def students_add(request):
         })
 
     elif request.method == 'POST':
-        #form = StudentForms(request.POST) #폼 객체 생성
-        form = StudentModelForms(request.POST)
+        form = StudentModelForms(request.POST, request.FILES) #파일 업로드할 때는 반드시 FILES도 입력!
         if form.is_valid():
             post = form.save()
-            # Students.objects.create(name=request.POST['name'],
-            # address=request.POST['address'],
-            # email=request.POST['email'])
             return redirect('first:students')
         else:
             return render(request, 'first/students_add.html', {

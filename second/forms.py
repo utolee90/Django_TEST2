@@ -1,11 +1,47 @@
 from django import forms
-from .models import Favourite, FavouriteGroup, Todo, TodoGroup
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm #회원가입 창
+from .models import Favourite, FavouriteGroup, Todo, TodoGroup, User
 import re
+
+class SignupForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].label = '비밀번호'
+        self.fields['password2'].label = '비밀번호확인'
+        self.fields['username'].help_text = '필수입력. 30자 이내. 영숫자 및 @/./+/-/_만 허용'
+        self.fields['password1'].help_text = '<ul><li>비밀번호는 다른 정보와 유사하면 안 됩니다.</li>\
+        <li>영숫자 혼용, 최소 8자리 이상</li></ul>'
+        self.fields['password2'].help_text = ''
+    # * -> 리스트 - 튜플 차이
+    # ** -> 딕셔너리 - x=y형태로 딕셔너리
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ['username', 'email', 'phone_number']
+        labels ={
+            'username':'아이디',
+            'email':'이메일',
+            'phone_number':'휴대전화 번호',
+        }
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, *kwargs)
+        pass
+
+    class Meta(UserCreationForm.Meta):
+        model=User
+        fields = ['username', 'password']
+        labels = {
+            'username':'아이디',
+            'password':'비밀번호'
+        }
+
+
 
 class FavouriteModelForms(forms.ModelForm):
     class Meta: #반드시 입력해야 한다!
         model = Favourite
-        fields = '__all__' #전부다 입력
+        fields = ['name', 'url', 'memo', 'group']#전부다 입력
         labels = {
             'name':'명칭', 'url': 'URL', 'memo':'메모', 'group':'그룹'
         }

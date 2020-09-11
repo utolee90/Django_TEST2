@@ -1,0 +1,20 @@
+{% extends 'second/layout.html' %}
+
+{% block title %}
+{{do_action}}
+{% endblock %}
+
+{% block content %}
+<h2>{{ action }} <span class='right-content'> </span></h2>
+<hr>
+<div id='content-block'>
+<form action='' method="post" enctype="multipart/form-data"> <!--자체적으로 보내는 곳은 없다.-->
+    {% csrf_token %}
+    <table>
+        {{form.as_table}}
+    </table>
+    <input type="hidden" name="user" value="{{request.user}}"/>
+    <input type="submit" value="{{ action }}"/>
+    </form>
+</div>
+{% endblock %}

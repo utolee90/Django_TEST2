@@ -36,6 +36,7 @@ html, body{height:100%;
         text-decoration:none;
     }
     .block-upper{
+        margin-left: calc(100% - 300px);
         padding-top:20px;
         padding-right:40px;
         padding-bottom:15px;
@@ -158,4 +159,8 @@ html, body{height:100%;
     .item-box-image:hover .sublist li:nth-child(3){
         position:absolute;
         bottom:-4em;
+    }
+    .item-box-image:hover .sublist li:nth-child(4){
+        position:absolute;
+        bottom:-5.5em;
     } 

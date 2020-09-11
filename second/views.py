@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Favourite, FavouriteGroup, Todo, TodoGroup
-from .forms import FavouriteModelForms, TodoModelForms, SignupForm, LoginForm
+from .models import Favourite, FavouriteGroup, Todo, TodoGroup, User
+from .forms import FavouriteModelForms, TodoModelForms, SignupForm, LoginForm, ChangeInfoForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -12,7 +12,7 @@ def index(request):
 @login_required
 def favourites(request):
     if request.method == 'GET':
-        favourites = Favourite.objects.all()
+        favourites = Favourite.objects.filter(user=request.user.username)
 
         return render(request, 'second/favourites.html', {
             'favourites': favourites
@@ -22,7 +22,7 @@ def favourites(request):
 def favourites_detail(request, idn):
     favourite = Favourite.objects.get(pk=idn)
     delid = f'del-favourite-{favourite.seq}'
-    favourites = Favourite.objects.all()
+    favourites = Favourite.objects.filter(user=request.user.username)
     if favourite in favourites:
         return render(request, 'second/favourite_detail.html', {
             'favourite': favourite,
@@ -46,10 +46,11 @@ def favourites_add(request):
         })
 
     elif request.method == 'POST':
-        print(request.POST)
         form = FavouriteModelForms(request.POST)
         if form.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
+            post.user = request.POST['user']
+            post.save()
             return redirect('second:favourites')
         else:
             return render(request, 'second/add.html', {
@@ -73,7 +74,9 @@ def favourites_modify(request, idn):
     elif request.method == 'POST':
         form = FavouriteModelForms(request.POST, instance=favourite)
         if form.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
+            post.user = request.POST['user']
+            post.save()
             return redirect('second:favourites')
         else:
             return render(request, 'second/add.html', {
@@ -102,9 +105,9 @@ def favourites_quick(request):
 @login_required
 def todo(request):
 
-    todos_pending = Todo.objects.filter(status='Pending')
-    todos_inprogress = Todo.objects.filter(status='Inprogress')
-    todos_end = Todo.objects.filter( status='End')
+    todos_pending = Todo.objects.filter(status='Pending', user=request.user.username)
+    todos_inprogress = Todo.objects.filter(status='Inprogress', user=request.user.username)
+    todos_end = Todo.objects.filter( status='End', user=request.user.username)
 
     return render(request, 'second/todos.html', {
         'todos_pending' : todos_pending,
@@ -116,7 +119,7 @@ def todo(request):
 def todo_detail(request, ids):
     todo = Todo.objects.get(pk=ids)
     delid = f'del-todo-{todo.seq}'
-    todos = Todo.objects.all()
+    todos = Todo.objects.filter(user=request.user.username)
     if todo in todos:
         return render(request, 'second/todo_detail.html', {
             'todo': todo,
@@ -142,7 +145,9 @@ def todo_add(request):
     elif request.method == 'POST':
         form = TodoModelForms(request.POST)
         if form.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
+            post.user = request.POST['user']
+            post.save()
             return redirect('second:todos')
         else:
             return render(request, 'second/add.html', {
@@ -166,7 +171,9 @@ def todo_modify(request, ids):
     elif request.method == 'POST':
         form = TodoModelForms(request.POST, instance=todo)
         if form.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
+            post.user = request.POST['user']
+            post.save()
             return redirect('second:todos'),
         else:
             return render(request, 'second/add.html', {
@@ -239,6 +246,26 @@ def signin(request):
             'form':form,
             'action':'로그인'
         })
+
+@login_required
+def changeuserinfo(request):
+    userinfo = User.objects.get(username=request.user.username)
+    if request.method == 'GET':
+        form=ChangeInfoForm(instance=userinfo)
+        return render(request, "second/signup.html", {
+            'form':form,
+            'action':'회원정보수정'
+        })
+    elif request.method == 'POST':
+        form = ChangeInfoForm(request.POST, instance=userinfo)
+        if form.is_valid():
+            signed_user = form.save()
+            return redirect('second:index')
+        else:
+            return render(request, 'second/signup.html', {
+                'form':form,
+                'action' : '회원정보수정'
+            })        
 
 @login_required
 def signout(request):

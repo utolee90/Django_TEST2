@@ -23,10 +23,17 @@
     </div>
     <div id="contents">
         {% if request.user.is_authenticated == False %}
-        <div class='right-content block-upper'><a href="{% url 'second:login' %}">로그인</a> &nbsp;
+        <div class='block-upper'><a href="{% url 'second:login' %}">로그인</a> &nbsp;
             <a href="{% url 'second:signup' %}">회원가입</a></div>
         {% else %}
-        <div class='right-content block-upper'>{{request.user}} &nbsp; <a href="{% url 'second:logout' %}">로그아웃</a></div>
+
+        <div class='block-upper'>
+        {% if request.user.profile %}
+        <img style="border-radius:50%%;width:1.3em;height:1.3em;" src="{{request.user.profile.url}}"/>
+        {% endif %}
+        {{request.user}} &nbsp;
+        <a href="{% url 'second:changeuserinfo' %}">회원정보수정</a> &nbsp; 
+        <a href="{% url 'second:logout' %}">로그아웃</a></div>
         
         {% endif %}
         {% block content %}

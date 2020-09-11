@@ -19,5 +19,6 @@ urlpatterns = [
     path('todo/shift', views.todo_shift, name='todo_shift'),
     path('signup', views.signup, name='signup'),
     path('login', views.signin, name='login'),
+    path('changeuserinfo', views.changeuserinfo, name='changeuserinfo'),
     path('logout', views.signout, name='logout'),
 ]

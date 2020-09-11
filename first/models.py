@@ -18,8 +18,8 @@ class Students(models.Model):
     email = models.CharField(max_length=30)
     file1 = models.FileField(null=True, blank=True, upload_to='')
     file2 = models.FileField(null=True, blank=True, upload_to=upload_to)
-    image1 = models.FileField(null=True, blank=True, upload_to='images/')
-    image2 = models.FileField(null=True, blank=True, upload_to='%Y/%m/%d')
+    image1 = models.ImageField(null=True, blank=True, upload_to='images/')
+    image2 = models.ImageField(null=True, blank=True, upload_to='%Y/%m/%d')
 
 
 class Scores(models.Model):

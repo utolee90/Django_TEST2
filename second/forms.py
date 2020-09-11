@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm #회원가입 창
+from django.forms.widgets import HiddenInput
 from .models import Favourite, FavouriteGroup, Todo, TodoGroup, User
 import re
 
@@ -9,19 +10,43 @@ class SignupForm(UserCreationForm):
         self.fields['password1'].label = '비밀번호'
         self.fields['password2'].label = '비밀번호확인'
         self.fields['username'].help_text = '필수입력. 30자 이내. 영숫자 및 @/./+/-/_만 허용'
-        self.fields['password1'].help_text = '<ul><li>비밀번호는 다른 정보와 유사하면 안 됩니다.</li>\
-        <li>영숫자 혼용, 최소 8자리 이상</li></ul>'
+        self.fields['password1'].help_text = '영숫자 혼용, 최소 8자리 이상'
         self.fields['password2'].help_text = ''
     # * -> 리스트 - 튜플 차이
     # ** -> 딕셔너리 - x=y형태로 딕셔너리
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['username', 'email', 'phone_number']
+        fields = ['username', 'email', 'phone_number', 'profile']
         labels ={
             'username':'아이디',
             'email':'이메일',
             'phone_number':'휴대전화 번호',
+            'profile':'프로필'
         }
+
+class ChangeInfoForm(SignupForm): # id 등 중요한 정보는 수정 못하게...
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].label = '비밀번호'
+        self.fields['password2'].label = '비밀번호확인'
+        self.fields['username'].help_text = ''
+        self.fields['password1'].help_text = ''
+        self.fields['password2'].help_text = ''
+        
+    class Meta(SignupForm.Meta):
+        model = User
+        fields = ['username','email', 'phone_number', 'profile', 'password1', 'password2']
+        labels = {
+            'email':'이메일',
+            'phone_number':'휴대전화 번호',
+            'profile':'프로필'
+        }
+        widgets = {'username':forms.HiddenInput(),
+        'password1':forms.HiddenInput(),
+        'password2':forms.HiddenInput()
+        }
+
+
 
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -35,7 +60,6 @@ class LoginForm(AuthenticationForm):
             'username':'아이디',
             'password':'비밀번호'
         }
-
 
 
 class FavouriteModelForms(forms.ModelForm):

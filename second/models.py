@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 # 기존 유저테이블이 아닌 새로 만들어야 한다.
 class User(AbstractUser): #사용자 정보 추가 (사용자 처리는 전담.)
     phone_number=models.CharField(max_length=20, blank=True)
+    profile = models.ImageField(verbose_name='user\'s profile image', null=True, blank=True, upload_to='second/profiles/')
 
 class FavouriteGroup(models.Model):
     seq = models.AutoField(primary_key = True)

@@ -27,7 +27,8 @@ def favourites_add(request):
     form = FavouriteModelForms()
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
         return render(request, 'second/favourites_add.html', {
-            'form':form
+            'form':form, 
+            'action':'등록'
         })
 
     elif request.method == 'POST':
@@ -37,7 +38,8 @@ def favourites_add(request):
             return redirect('second:favourites')
         else:
             return render(request, 'second/favourites_add.html', {
-                'form':form
+                'form':form,
+                'action':'등록',
             })
 
 def favourites_modify(request, idn):
@@ -46,17 +48,20 @@ def favourites_modify(request, idn):
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
         form = FavouriteModelForms(instance=favourite)
         return render(request, 'second/favourites_add.html', {
-            'form':form
+            'form':form,
+            'action':'수정',
         })
 
     elif request.method == 'POST':
         form = FavouriteModelForms(request.POST, instance=favourite)
+        action = '수정'
         if form.is_valid():
             post = form.save()
             return redirect('second:favourites')
         else:
             return render(request, 'second/favourites_add.html', {
-                'form':form
+                'form':form,
+                'action':'수정',
             })
 
 def favourites_delete(request):
@@ -102,7 +107,8 @@ def todo_add(request):
     form = TodoModelForms()
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
         return render(request, 'second/todo_add.html', {
-            'form':form
+            'form':form,
+            'action':'등록'
         })
 
     elif request.method == 'POST':
@@ -112,7 +118,8 @@ def todo_add(request):
             return redirect('second:todos')
         else:
             return render(request, 'second/todo_add.html', {
-                'form':form
+                'form':form,
+                'action':'등록'
             })
 
 def todo_modify(request, ids):
@@ -121,7 +128,8 @@ def todo_modify(request, ids):
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
         form = TodoModelForms(instance=todo)
         return render(request, 'second/todo_add.html', {
-            'form':form
+            'form':form,
+            'action':'수정'
         })
 
     elif request.method == 'POST':
@@ -131,7 +139,8 @@ def todo_modify(request, ids):
             return redirect('second:todos')
         else:
             return render(request, 'second/todo_add.html', {
-                'form':form
+                'form':form,
+                'action':'수정'
             })
 
 def todo_delete(request):

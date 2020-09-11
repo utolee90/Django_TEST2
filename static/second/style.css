@@ -3,10 +3,12 @@
 html, body{height:100%;
     padding:0px;
     margin:0px;
-    background:#f4f4f4;}
+    background:#f4f4f4;
+    min-width:500px;
+}
     #list{
         float:left;
-        width:15em;
+        width:180px;
         height:100%;
         color:#f4f4f4;
         background-color:blue;
@@ -27,7 +29,7 @@ html, body{height:100%;
     #list li{
         line-height:2em;
         padding:0.3em;
-        padding-left:3em;
+        padding-left:20px;
     }
     #list ul a{
         color:#f4f4f4;
@@ -36,12 +38,12 @@ html, body{height:100%;
 /* 내용 공통 */
 
     #content-block{
-        width: calc(99% - 240px);
+        width: calc(98% - 240px);
         padding:3em;
         padding-top:0;
         margin:5px;
         margin-top:0px;
-        margin-left:200px;
+        margin-left:165px;
         
     }
     @media (min-width:1260px){
@@ -84,7 +86,11 @@ html, body{height:100%;
         width:320px;
         position:relative;
         padding:2px;
-        
+    }
+    @media all (max-width:540px){
+        #list{
+            width:33.3%;
+        }
     }
     .center{
         text-align:center;

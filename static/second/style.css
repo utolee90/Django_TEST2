@@ -90,7 +90,7 @@ html, body{height:100%;
     @media all (max-width:540px){
         #list{
             width:33.3%;
-        }
+        };
     }
     .center{
         text-align:center;

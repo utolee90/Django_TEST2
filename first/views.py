@@ -5,7 +5,10 @@ from .forms import StudentForms, StudentModelForms # import 하기
 
 # Create your views here.
 def index(request):
-    
+    # print(request.COOKIES)
+    # request.session['userid'] = 'yohan'
+    # del request.session['userid']  #세션 지울 때
+    # request.session['count'] = '0' 
     return render(request, 'first/index.html')
 
 def students(request):
@@ -125,3 +128,11 @@ def scores_del(request):
         return render(request, 'first/scores_del.html', {
             'name':delname
         } )
+
+def make_cookie(request, name):
+    response = HttpResponse()
+    response.set_cookie('name', name)
+    return response
+
+def get_cookie(request):
+    pass

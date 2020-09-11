@@ -12,5 +12,6 @@ urlpatterns = [
     path('students/modify/<int:id>', views.students_modify, name='students_modify'),
     path('scores', views.scores, name='scores'), 
     path('scores/add', views.scores_add, name='scores_add'),
-    path('scores/del', views.scores_del, name='scores_del')
+    path('scores/del', views.scores_del, name='scores_del'),
+    path('makecookie/<name>', views.make_cookie, name='make_cookie')
 ]

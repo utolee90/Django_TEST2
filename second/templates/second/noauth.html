@@ -1,5 +1,7 @@
 {% extends 'second/layout.html' %}
 
+
+
 {% block title %}
 No Authurity on {{action}}
 {% endblock %}
@@ -15,7 +17,7 @@ No Authurity on {{action}}
     <div class='item-box-enclose'>
         <div class="item-box">
             <p>자신이 등록한 {{action_kr}} 아니므로 접근 불가능합니다!</p>
-            <p><a href="{% url 'second:favourites' %}">돌아가기</a></p>
+            <p><a href="{% url 'second:favourites' %}" style='text-decoration:underline;'>돌아가기</a></p>
 
         </div>
     </div>

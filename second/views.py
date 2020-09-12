@@ -30,10 +30,10 @@ def favourites_detail(request, idn):
             'idn' : idn
         })
     else:
-        return render(request, 'second/noauth.html'), {
+        return render(request, 'second/noauth.html', {
             'action':'Favourite',
             'action_kr':'즐겨찾기가'
-        }
+        })
 
 @login_required
 def favourites_add(request):
@@ -65,11 +65,19 @@ def favourites_modify(request, idn):
     
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
         form = FavouriteModelForms(instance=favourite)
-        return render(request, 'second/add.html', {
-            'form':form,
-            'action':'수정',
-            'do_action':'Modify Favourite',
-        })
+        favourites = Favourite.objects.filter(user=request.user.username)
+        if favourite in favourites:
+            return render(request, 'second/add.html', {
+                'form':form,
+                'action':'수정',
+                'do_action':'Modify Favourite',
+            })
+        else:
+            return render(request, 'second/noauth.html', {
+            'action':'Favourite',
+            'action_kr':'즐겨찾기가'
+            })
+
 
     elif request.method == 'POST':
         form = FavouriteModelForms(request.POST, instance=favourite)
@@ -162,11 +170,19 @@ def todo_modify(request, ids):
     
     if request.method == 'GET': #get 메소드로 얻을 때는 강제
         form = TodoModelForms(instance=todo)
-        return render(request, 'second/add.html', {
-            'form':form,
-            'action':'수정',
-            'do_action':'Modify Todo',
+        todos = Todo.objects.filter(user=request.user.username)
+        if todo in todos:
+            return render(request, 'second/add.html', {
+                'form':form,
+                'action':'수정',
+                'do_action':'Modify Todo',
+            })
+        else:
+            return render(request, 'second/noauth.html', {
+            'action': 'Todo',
+            'action_kr': '할일이'
         })
+
 
     elif request.method == 'POST':
         form = TodoModelForms(request.POST, instance=todo)

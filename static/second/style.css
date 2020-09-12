@@ -139,6 +139,9 @@ html, body{height:100%;
     .item-box-image:hover .sublist{
         float:right;
         display:block;
+        position:absolute;
+        bottom:0;
+        right:-3em;
     }
     .item-box-image:hover .sublist li{
         background-color:white;
@@ -148,6 +151,7 @@ html, body{height:100%;
         z-index:1;
         line-height:1.5em;
     }
+   /*
     .item-box-image:hover .sublist li:first-child{
         position:absolute;
         bottom:-1em;
@@ -159,8 +163,8 @@ html, body{height:100%;
     .item-box-image:hover .sublist li:nth-child(3){
         position:absolute;
         bottom:-4em;
-    }
+    } */
     .item-box-image:hover .sublist li:nth-child(4){
         position:absolute;
-        bottom:-5.5em;
-    } 
+        bottom:-5em;
+    }

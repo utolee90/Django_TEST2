@@ -109,6 +109,10 @@ def favourites_quick(request):
         delpk = request.GET['del']
         item = Favourite.objects.get(pk=delpk)
         item.delete()
+        favourites = Favourite.objects.filter(user=request.user.username)
+        return render(request, 'second/favourites.html', {
+            'favourites':favourites
+        })
         
         
 @login_required
@@ -216,6 +220,10 @@ def todo_quick(request):
         delpk = request.GET['del']
         item = Todo.objects.get(pk=delpk)
         item.delete()
+        todos = Todo.objects.filter(user=request.user.username)
+        return render(request, 'second/todos.html', {
+            'todos':todos
+        })
         
         
 @login_required
@@ -226,6 +234,10 @@ def todo_shift(request):
         item = Todo.objects.get(pk=seq)
         item.status = status
         item.save()
+        todos = Todo.objects.filter(user=request.user.username)
+        return render(request, 'second/todos.html', {
+            'todos':todos
+        })
 
 def signup(request):
     if request.method == 'GET':

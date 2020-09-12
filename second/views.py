@@ -110,6 +110,7 @@ def favourites_quick(request):
         item = Favourite.objects.get(pk=delpk)
         item.delete()
         
+        
 @login_required
 def todo(request):
 
@@ -215,7 +216,8 @@ def todo_quick(request):
         delpk = request.GET['del']
         item = Todo.objects.get(pk=delpk)
         item.delete()
-
+        
+        
 @login_required
 def todo_shift(request):
     if request.method == 'GET' and request.GET.get('status') and request.GET.get('seq'):
@@ -233,7 +235,7 @@ def signup(request):
             'action':'회원가입'
         })
     elif request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignupForm(request.POST, request.FILES)
         if form.is_valid():
             signed_user = form.save()
             return redirect('second:index')
@@ -273,10 +275,10 @@ def changeuserinfo(request):
             'action':'회원정보수정'
         })
     elif request.method == 'POST':
-        form = ChangeInfoForm(request.POST, instance=userinfo)
+        form = ChangeInfoForm(request.POST, request.FILES, instance=userinfo)
         if form.is_valid():
             signed_user = form.save()
-            return redirect('second:index')
+            return render(request, 'second/layout.html', {})
         else:
             return render(request, 'second/signup.html', {
                 'form':form,

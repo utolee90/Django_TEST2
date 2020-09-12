@@ -50,19 +50,22 @@ Favourites
             </div></div>
         </div>
         <script>
-            idx = document.getElementById('del-{{favourite.seq}}-from-list');
-            idx.onclick = () =>{ 
-                /*
-                //실제 데이터 삭제하는 함수
-                fetch("{% url 'second:favourites_quick'  %}"+'?'+ new URLSearchParams({'del':'{{favourite.seq}}'})).then(
-                    function(){location.href="{% url 'second:favourites' %}";});
-                */
-                idbox = document.getElementById('item-box-{{favourite.seq}}');
-                idbox.remove(); //시각적으로만 조작.
-            }
+            document.getElementById('del-{{favourite.seq}}-from-list').onclick = () => {
+                let val = "{{favourite.seq}}";
+                del_process(val);
+            }            
         </script>
         {% endfor %}
 </div>
 </div>
+<script>
+del_process = (_val) =>{
+    fetch("{% url 'second:favourites_quick'  %}"+'?'+ new URLSearchParams({'del':_val })).then(() => {
+                    idbox = document.querySelector('#item-box-'+_val);
+                    idbox.remove(); //시각적으로 조작
+                }
+                );
+};
+</script>
 
 {% endblock %}

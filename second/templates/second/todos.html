@@ -5,48 +5,14 @@ todos_end
 {% endblock %}
 {% block newcss %}
 <style>
-/* item-box related */
-.item-box-image{
-        float:right;
-    } 
-    .sublist{
-        display:none;
-    }
-    .sublist ul{
-        list-style-type:none;
-        padding:0;
-        margin:0;
-    }
-    .item-box-image:hover .sublist{
-        float:right;
-        display:block;
-    }
-    .item-box-image:hover .sublist li{
-        background-color:white;
-        width:5em;
-        right:0em;
-        border: 1px solid black;
-        z-index:1;
-        line-height:1.5em;
-    }
-    .item-box-image:hover .sublist li:first-child{
-        position:absolute;
-        bottom:-1em;
-    }
-    .item-box-image:hover .sublist li:nth-child(2){
-        position:absolute;
-        bottom:-2.5em;
-    }
-    .item-box-image:hover .sublist li:nth-child(3){
-        position:absolute;
-        bottom:-4em;
-    } 
+
 </style>
 {% endblock %}
 
 {% block content %}
 {% load static %}
 <div id="content-block">
+<script>val_list =[];</script>
 <h2>내가할일<span class='right-content'><a href="{% url 'second:todo_add' %}"><img src="{% static 'second/icon_add.png' %}"/></a></span></h2>
 <hr>
 <div class='item-box-enclose-3'>
@@ -72,46 +38,23 @@ todos_end
            </div>
         </div>
         <script>
-            idx = document.getElementById('del-{{todo.seq}}-from-list');
-            idx.onclick = () =>{ 
-                /*
-                fetch("{% url 'second:todo_quick'  %}"+'?'+ new URLSearchParams({'del':'{{todo.seq}}'})).then(
-                    function(){location.href="{% url 'second:todos' %}";});
-                    */
-                // 시각적으로만 데이터 지우기
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                idbox.remove();//시각적으로만 조작.
+        var val = "{{todo.seq}}"
+        val_list.push(val);
+            document.getElementById('del-{{todo.seq}}-from-list').onclick = () =>{ 
+                let val = "{{todo.seq}}";
+                del_process(val);
             };
-            idp = document.getElementById('shift-{{todo.seq}}-to-pending');
-            idp.onclick = () =>{ 
-                /* fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Pending'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                pendingbox = document.querySelectorAll('.item-box-enclose-3')[0];
-                pendingbox.appendChild(idbox);
-
+            document.getElementById('shift-{{todo.seq}}-to-pending').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 0);
             };
-            idi = document.getElementById('shift-{{todo.seq}}-to-inprogress');
-            idi.onclick = () =>{ 
-                /*
-                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Inprogress'})).then(
-                    function(){location.href="{% url 'second:todos' %}";});
-                */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                pendingbox = document.querySelectorAll('.item-box-enclose-3')[0];
-                inprogressbox = document.querySelectorAll('.item-box-enclose-3')[1];
-                fetch(inprogressbox.appendChild(idbox)).then(pendingbox.removeChild(idbox));
+            document.getElementById('shift-{{todo.seq}}-to-inprogress').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 1);
             };
-            ide = document.getElementById('shift-{{todo.seq}}-to-end');
-            ide.onclick = () =>{ 
-                /*
-                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'End'})).then(
-                    function(){location.href="{% url 'second:todos' %}";});
-                */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                pendingbox = document.querySelectorAll('.item-box-enclose-3')[0];
-                endbox = document.querySelectorAll('.item-box-enclose-3')[2];
-                fetch(endbox.appendChild(idbox)).then(pendingbox.removeChild(idbox));
+            document.getElementById('shift-{{todo.seq}}-to-end').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 2);
             };
         </script>
         {% endfor %}
@@ -139,42 +82,23 @@ todos_end
             </div>
     </div>
         <script>
-            idx = document.getElementById('del-{{todo.seq}}-from-list');
-            idx.onclick = () =>{ 
-                /*
-                fetch("{% url 'second:todo_quick'  %}"+'?'+ new URLSearchParams({'del':'{{todo.seq}}'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                idbox.remove();//시각적으로만 조작.
+        var val = "{{todo.seq}}"
+        val_list.push(val);
+            document.getElementById('del-{{todo.seq}}-from-list').onclick = () =>{ 
+                let val = "{{todo.seq}}";
+                del_process(val);
             };
-            idp = document.getElementById('shift-{{todo.seq}}-to-pending');
-            idp.onclick = () =>{ 
-                /* fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Pending'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                pendingbox = document.querySelectorAll('.item-box-enclose-3')[0];
-                inprogressbox = document.querySelectorAll('.item-box-enclose-3')[1];
-                fetch(pendingbox.appendChild(idbox)).then(inprogressbox.removeChild(idbox));
-
+            document.getElementById('shift-{{todo.seq}}-to-pending').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 0);
             };
-            idi = document.getElementById('shift-{{todo.seq}}-to-inprogress');
-            idi.onclick = () =>{ 
-                /*
-                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Inprogress'})).then(
-                    function(){location.href="{% url 'second:todos' %}";});
-                */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                inprogressbox = document.querySelectorAll('.item-box-enclose-3')[1];
-                inprogressbox.appendChild(idbox);
+            document.getElementById('shift-{{todo.seq}}-to-inprogress').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 1);
             };
-            ide = document.getElementById('shift-{{todo.seq}}-to-end');
-            ide.onclick = () =>{ 
-                /* fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'End'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                inprogressbox = document.querySelectorAll('.item-box-enclose-3')[1];
-                endbox = document.querySelectorAll('.item-box-enclose-3')[2];
-                fetch(pendingbox.appendChild(idbox)).then(inprogressbox.removeChild(idbox));
+            document.getElementById('shift-{{todo.seq}}-to-end').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 2);
             };
         </script>
     {% endfor %}
@@ -202,42 +126,67 @@ todos_end
             </div>
         </div>
         <script>
-            idx = document.getElementById('del-{{todo.seq}}-from-list');
-            idx.onclick = () =>{ 
-                /* fetch("{% url 'second:todo_quick'  %}"+'?'+ new URLSearchParams({'del':'{{todo.seq}}'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                idbox.remove(); //시각적으로만 조작.
+        var val = "{{todo.seq}}"
+        val_list.push(val);
+            document.getElementById('del-{{todo.seq}}-from-list').onclick = () =>{ 
+                let val = "{{todo.seq}}";
+                del_process(val);
             };
-            idp = document.getElementById('shift-{{todo.seq}}-to-pending');
-            idp.onclick = () =>{ 
-                /* fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Pending'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                pendingbox = document.querySelectorAll('.item-box-enclose-3')[0];
-                endbox = document.querySelectorAll('.item-box-enclose-3')[2];
-                fetch(pendingbox.appendChild(idbox)).then(endbox.removeChild(idbox));
+            document.getElementById('shift-{{todo.seq}}-to-pending').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 0);
             };
-            idi = document.getElementById('shift-{{todo.seq}}-to-inprogress');
-            idi.onclick = () =>{ 
-                /*
-                fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'Inprogress'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                inprogressbox = document.querySelectorAll('.item-box-enclose-3')[1];
-                endbox = document.querySelectorAll('.item-box-enclose-3')[2];
-                fetch(inprogressbox.appendChild(idbox)).then(endbox.removeChild(idbox));
+            document.getElementById('shift-{{todo.seq}}-to-inprogress').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 1);
             };
-            ide = document.getElementById('shift-{{todo.seq}}-to-end');
-            ide.onclick = () =>{ 
-                /* fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':'{{todo.seq}}', 'status':'End'})).then(
-                    function(){location.href="{% url 'second:todos' %}";}); */
-                idbox = document.getElementById('item-box-{{todo.seq}}');
-                endbox = document.querySelectorAll('.item-box-enclose-3')[2];
-                endbox.appendChild(idbox);
+            document.getElementById('shift-{{todo.seq}}-to-end').onclick = () =>{ 
+               let val = "{{todo.seq}}";
+               shift_process(val, 2);
             };
         </script>
     {% endfor %}
 </div>
 </div>
+<script>
+del_process = (_val) =>{
+    fetch("{% url 'second:todo_quick'  %}"+'?'+ new URLSearchParams({'del':_val })).then(() => {
+                    idbox = document.querySelector('#item-box-'+_val);
+                    idbox.remove(); //시각적으로 조작
+                }
+                );
+};
+function hide_list(_val){ //메뉴 숨기기
+    box_list = document.querySelectorAll('.item-box-enclose-3');
+    item_list = document.querySelector('#item-list-'+_val);
+    _num=-1;
+    for (let j=0;j<3;j++){
+        if (box_list[j].querySelector('#item-list-'+_val) === item_list){ // 현재 item_list 위치 찾기
+        _num=j; 
+        break;
+        }
+    }
+    for (let i=0; i<4;i++){
+    if (i == _num+1){ //num일 때만 숨기기.
+        item_list.querySelectorAll('li')[i].style.display='none';
+    }
+    else{
+        item_list.querySelectorAll('li')[i].style.display='block';
+    }
+    }
+};
+shift_process = (_val, _num) =>{ //상자 위치 이동 함수
+    status_list = ['Pending', 'Inprogress', 'End'];
+    idbox = document.querySelector('#item-box-'+_val);
+    box_list = document.querySelectorAll('.item-box-enclose-3');
+    fetch("{% url 'second:todo_shift'  %}"+'?'+ new URLSearchParams({'seq':_val, 'status':status_list[_num]})).then(() =>{
+    box_list[_num].appendChild(idbox);
+    hide_list(_val);}
+    );
+};
+for (_val of val_list){
+    hide_list(_val);
+}
+
+</script>
 {% endblock %}

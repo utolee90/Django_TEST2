@@ -22,6 +22,7 @@ class Favourite(models.Model):
     memo = models.TextField()
     reg_date = models.DateField(auto_now_add = True)
     user = models.CharField(max_length=30, default='AnonymousUser')
+    # reg_user = models.ForeignKey(User, on_delete = models.CASCADE)
     group = models.ForeignKey(FavouriteGroup, on_delete = models.CASCADE)
     
 class newprojGroup(models.Model):
@@ -65,5 +66,6 @@ class Todo(models.Model):
     end_date = models.DateField()
     del_yn = models.BooleanField(default=False)
     user = models.CharField(max_length=30, default='AnonymousUser')
+    # reg_user = models.ForeignKey(User, on_delete = models.CASCADE)
     group = models.ForeignKey(TodoGroup, on_delete = models.CASCADE)
 

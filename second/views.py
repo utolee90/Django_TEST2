@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Favourite, FavouriteGroup, Todo, TodoGroup, User
 from .forms import FavouriteModelForms, TodoModelForms, SignupForm, LoginForm, ChangeInfoForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
 
@@ -290,6 +290,7 @@ def changeuserinfo(request):
         form = ChangeInfoForm(request.POST, request.FILES, instance=userinfo)
         if form.is_valid():
             signed_user = form.save()
+            update_session_auth_hash(request, signed_user)
             return render(request, 'second/layout.html', {})
         else:
             return render(request, 'second/signup.html', {

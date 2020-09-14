@@ -130,6 +130,8 @@ html, body{height:100%;
     } 
     .sublist{
         display:none;
+        text-align:center;
+        border-collapse:collapse;
     }
     .sublist ul{
         list-style-type:none;
@@ -151,5 +153,9 @@ html, body{height:100%;
         border: 1px solid black;
         z-index:1;
         line-height:1.5em;
+        border-bottom:none;
+    }
+    .item-box-image:hover .sublist li:last-child{
+        border-bottom:1px solid black;        
     }
   
